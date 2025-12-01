@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "b7e47d42-195c-45ee-b614-81011e66024c",
+		"name": "My API",
+		"description": "Коллекция запросов для Project & Task Management API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50129496",
+		"_collection_link": "https://fall-loved-2904631.postman.co/workspace/fall-loved's-Workspace~ee910a77-9c2c-4b21-8013-3b8669e21e01/collection/50129496-b7e47d42-195c-45ee-b614-81011e66024c?action=share&source=collection_link&creator=50129496"
+	},
+	"item": [
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Создание проекта",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Project has id\", function () { pm.expect(jsonData.id).to.exist; });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{projectId}}\",\n  \"name\": \"Demo Project\",\n  \"description\": \"Описание проекта\",\n  \"createdAt\": \"2025-11-28T20:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Добавление задачи в проект",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{taskId}}\",\n  \"projectId\": \"{{projectId}}\",\n  \"title\": \"Demo Task\",\n  \"status\": \"open\",\n  \"createdAt\": \"2025-11-28T20:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/projects/{{projectId}}/tasks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"projects",
+								"{{projectId}}",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Назначение задачи пользователю",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"{{assigneeId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/{{taskId}}/assign",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tasks",
+								"{{taskId}}",
+								"assign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение статуса задачи",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"done\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/{{taskId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tasks",
+								"{{taskId}}",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление комментария к задаче",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"44444444-4444-4444-4444-444444444444\",\n  \"taskId\": \"{{taskId}}\",\n  \"authorId\": \"55555555-5555-5555-5555-555555555555\",\n  \"text\": \"Комментарий к задаче\",\n  \"createdAt\": \"2025-11-28T20:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tasks/{{taskId}}/comments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tasks",
+								"{{taskId}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Фильтрация задач",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tasks?status=open&assigneeId={{assigneeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "open"
+								},
+								{
+									"key": "assigneeId",
+									"value": "{{assigneeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Отчёт по выполнению задач",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reports/completion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reports",
+								"completion"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.project.managment.org/v1"
+		},
+		{
+			"key": "authToken",
+			"value": "your_token_here"
+		},
+		{
+			"key": "projectId",
+			"value": "11111111-1111-1111-1111-111111111111"
+		},
+		{
+			"key": "taskId",
+			"value": "22222222-2222-2222-2222-222222222222"
+		},
+		{
+			"key": "assigneeId",
+			"value": "33333333-3333-3333-3333-333333333333"
+		}
+	]
+}
