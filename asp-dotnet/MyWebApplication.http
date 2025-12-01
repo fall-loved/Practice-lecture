@@ -1,0 +1,16 @@
+@MyWebApplication_HostAddress = http://localhost:5000
+
+GET {{MyWebApplication_HostAddress}}/strings/
+Accept: application/json
+
+
+###
+POST {{MyWebApplication_HostAddress}}/strings/
+Content-Type: application/json
+
+{
+  "value": "some string"
+}
+
+
+###
